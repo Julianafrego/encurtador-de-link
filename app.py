@@ -10,6 +10,25 @@ CORS(app)
 def conectar_banco():
     return sqlite3.connect('banco.db')
 
+def inicializar_banco():
+    conexao = sqlite3.connect('banco.db')
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS urls (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            long_url TEXT NOT NULL,
+            short_code TEXT UNIQUE,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+
+    conexao.commit()
+    conexao.close()
+
+    print("Banco inicializado com sucesso.")
+
+inicializar_banco()
 
 # POST 
 @app.route('/api/encurtar', methods=['POST'])
