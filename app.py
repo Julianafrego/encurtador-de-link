@@ -31,6 +31,10 @@ def inicializar_banco():
 
 inicializar_banco()
 
+@app.route("/")
+def home():
+    return "API funcionando!"
+
 # POST 
 @app.route('/api/encurtar', methods=['POST'])
 def criar_link():
@@ -49,8 +53,12 @@ def criar_link():
 
     try:
         # Salva a URL e devolve o ID gerado
-        cursor.execute("INSERT INTO urls (long_url) VALUES (?) RETURNING id;", (url_original,))
-        id_gerado = cursor.fetchone()[0]
+        cursor.execute(
+            "INSERT INTO urls (long_url) VALUES (?);",
+            (url_original,)
+        )
+
+        id_gerado = cursor.lastrowid
 
         # Chama a função de codificação
         codigo_curto = codificar(id_gerado)
