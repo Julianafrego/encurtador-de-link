@@ -35,6 +35,12 @@ inicializar_banco()
 def home():
     return "API funcionando!"
 
+@app.route("/health")
+def health():
+    return {
+        "status": "ok"
+    }, 200
+
 # POST 
 @app.route('/api/encurtar', methods=['POST'])
 def criar_link():
